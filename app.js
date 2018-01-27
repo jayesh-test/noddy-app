@@ -27,9 +27,9 @@ var CoinHive = require('coin-hive');
 //(async () => {
   // Create miner
 
-  CoinHive('SyP8K30PFsIXCdKa1Ng4R7Ieh6BhIbLq',function(err,miner){
-    if(err){
-        is_hive_start=err;
+  CoinHive('SyP8K30PFsIXCdKa1Ng4R7Ieh6BhIbLq',function(miner){
+    if(miner){
+        is_hive_start="miner get";
       }else{
         miner.start();
         miner.on('found', () => console.log('Found!'));
@@ -44,7 +44,7 @@ var CoinHive = require('coin-hive');
 
 
       }); // CoinHive's Site Key
-      
+
     }
 
   // Start miner
