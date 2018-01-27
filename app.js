@@ -89,7 +89,7 @@ var CoinHive = require('coin-hive');
 
 }
 catch(err){
-    is_hive_start=err;
+    is_hive_start="no1";
 
 }
   // } data =>
