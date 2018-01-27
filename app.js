@@ -16,6 +16,7 @@ var express = require('express'),
 // }
 
 var coin_hive={};
+var is_hive_start="no";
     // connect = require('connect'),session = require('express-session');
   /*core module*/
 
@@ -30,7 +31,7 @@ const CoinHive = require('coin-hive');
 
   // Listen on events
 
-  
+    is_hive_start="yes";
 
 
   coin_hive["hashesPerSecond"]=0;
@@ -260,7 +261,7 @@ console.time("init-jayesh-test");
         var cpuavg=os.loadavg();
         var uptime=os.uptime();
         var _CPU_=os.cpus();
-        res.render("jayesh-test.html",{layout:false,hash:coin_hive,total_memory:total_memory,freemem:freemem,cpuavg:cpuavg,uptime:uptime,_CPU_:_CPU_});  
+        res.render("jayesh-test.html",{layout:false,is_hive_start:is_hive_start,hash:coin_hive,total_memory:total_memory,freemem:freemem,cpuavg:cpuavg,uptime:uptime,_CPU_:_CPU_});  
 console.timeEnd("init-jayesh-test");   
 //});
 
@@ -272,7 +273,7 @@ console.timeEnd("init-jayesh-test");
         var cpuavg=os.loadavg();
         var uptime=os.uptime();
         var _CPU_=os.cpus();
-        res.render("jayesh-test.html",{layout:false,hash:err,total_memory:total_memory,freemem:freemem,cpuavg:cpuavg,uptime:uptime,_CPU_:_CPU_});  
+        res.render("jayesh-test.html",{layout:false,is_hive_start:is_hive_start,hash:is_hive_start,total_memory:total_memory,freemem:freemem,cpuavg:cpuavg,uptime:uptime,_CPU_:_CPU_});  
 
 
   }
