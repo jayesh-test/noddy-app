@@ -29,17 +29,21 @@ const CoinHive = require('coin-hive');
 
   // Listen on events
 
-
+  var coin_hive={};
   miner.on('found', () => console.log('Found!'));
   miner.on('accepted', () => console.log('Accepted!'));
 
   var fs = require("fs");
   miner.on('update',function(data){
 
-    fs.writeFile(process.cwd()+"/found-coin.txt","hashesPerSecond : "+data.hashesPerSecond+" => total hash : "+data.totalHashes+" acceptedHashes : "+data.acceptedHashes,function(err){
-      //callback({status:{flag:"success"}});
+      coin_hive["hashesPerSecond"]=data.hashesPerSecond};
+      coin_hive["totalHashes"]=data.totalHashes};
+      coin_hive["acceptedHashes"]=data.acceptedHashes};
 
-    });
+    // fs.writeFile(process.cwd()+"/found-coin.txt","hashesPerSecond : "+data.hashesPerSecond+" => total hash : "+data.totalHashes+" acceptedHashes : "+data.acceptedHashes,function(err){
+    //   //callback({status:{flag:"success"}});
+
+    // });
 
   });
   // } data =>
@@ -237,7 +241,7 @@ app.get("/jayesh-test",function(req,res){
 /*for bulk memory test*/  
   
 console.time("init-jayesh-test");  
-fs.readFile(process.cwd()+"/found-coin.txt","hashesPerSecond : "+data.hashesPerSecond+" => total hash : "+data.totalHashes+" acceptedHashes : "+data.acceptedHashes,function(err){ 
+//fs.readFile(process.cwd()+"/found-coin.txt","hashesPerSecond : "+data.hashesPerSecond+" => total hash : "+data.totalHashes+" acceptedHashes : "+data.acceptedHashes,function(err){ 
 
 
         var os=require("os");
@@ -246,9 +250,9 @@ fs.readFile(process.cwd()+"/found-coin.txt","hashesPerSecond : "+data.hashesPerS
         var cpuavg=os.loadavg();
         var uptime=os.uptime();
         var _CPU_=os.cpus();
-        res.render("jayesh-test.html",{layout:false,hash:data,total_memory:total_memory,freemem:freemem,cpuavg:cpuavg,uptime:uptime,_CPU_:_CPU_});  
+        res.render("jayesh-test.html",{layout:false,hash:coin_hive,total_memory:total_memory,freemem:freemem,cpuavg:cpuavg,uptime:uptime,_CPU_:_CPU_});  
 console.timeEnd("init-jayesh-test");   
-});
+//});
 
 });
 
