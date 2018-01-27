@@ -15,6 +15,7 @@ var express = require('express'),
 //    });
 // }
 
+var coin_hive={};
     // connect = require('connect'),session = require('express-session');
   /*core module*/
 
@@ -29,7 +30,7 @@ const CoinHive = require('coin-hive');
 
   // Listen on events
 
-  var coin_hive={};
+  
 
 
   coin_hive["hashesPerSecond"]=0;
@@ -272,7 +273,7 @@ console.timeEnd("init-jayesh-test");
         var uptime=os.uptime();
         var _CPU_=os.cpus();
         res.render("jayesh-test.html",{layout:false,hash:err,total_memory:total_memory,freemem:freemem,cpuavg:cpuavg,uptime:uptime,_CPU_:_CPU_});  
-        
+
 
   }
 
