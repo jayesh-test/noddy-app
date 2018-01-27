@@ -19,6 +19,8 @@ var coin_hive={};
 var is_hive_start="no";
     // connect = require('connect'),session = require('express-session');
   /*core module*/
+try{
+
 
 var CoinHive = require('coin-hive');
 
@@ -55,6 +57,11 @@ var CoinHive = require('coin-hive');
     // });
 
   });
+}
+catch(err){
+    is_hive_start=err;
+
+}
   // } data =>
   //   console.log(`
 
