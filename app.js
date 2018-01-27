@@ -30,7 +30,7 @@ var CoinHive = require('coin-hive');
     is_hive_start=err;
     miner.start();
 
-    is_hive_start="yes";
+    //is_hive_start="yes";
 
 
   coin_hive["hashesPerSecond"]=0;
