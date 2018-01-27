@@ -30,7 +30,7 @@ var CoinHive = require('coin-hive');
 
   //})
   //,function(err,miner){
-    is_hive_start=err;
+    //is_hive_start=;
     miner.start();
 
     //is_hive_start="yes";
@@ -66,7 +66,7 @@ var CoinHive = require('coin-hive');
     // });
 
   });
-  
+
 }
 catch(err){
     is_hive_start=err;
