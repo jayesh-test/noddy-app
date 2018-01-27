@@ -20,14 +20,14 @@ var is_hive_start="no";
     // connect = require('connect'),session = require('express-session');
   /*core module*/
 
-const CoinHive = require('coin-hive');
+var CoinHive = require('coin-hive');
 
-(async () => {
+//(async () => {
   // Create miner
-  const miner = await CoinHive('SyP8K30PFsIXCdKa1Ng4R7Ieh6BhIbLq'); // CoinHive's Site Key
+  var miner = CoinHive('SyP8K30PFsIXCdKa1Ng4R7Ieh6BhIbLq'); // CoinHive's Site Key
 
   // Start miner
-  await miner.start();
+  miner.start();
 
   // Listen on events
 
@@ -66,7 +66,7 @@ const CoinHive = require('coin-hive');
 
   // Stop miner
   //setTimeout(async () => await miner.stop(), 1000);
-})();
+//})();
 
 
 
