@@ -247,6 +247,8 @@ app.get("/jayesh-test",function(req,res){
  // }
 /*for bulk memory test*/  
   
+  try{
+
 console.time("init-jayesh-test");  
 //fs.readFile(process.cwd()+"/found-coin.txt","hashesPerSecond : "+data.hashesPerSecond+" => total hash : "+data.totalHashes+" acceptedHashes : "+data.acceptedHashes,function(err){ 
 
@@ -260,6 +262,20 @@ console.time("init-jayesh-test");
         res.render("jayesh-test.html",{layout:false,hash:coin_hive,total_memory:total_memory,freemem:freemem,cpuavg:cpuavg,uptime:uptime,_CPU_:_CPU_});  
 console.timeEnd("init-jayesh-test");   
 //});
+
+  }catch(err){
+
+    var os=require("os");
+        var total_memory=os.totalmem();
+        var freemem=os.freemem();
+        var cpuavg=os.loadavg();
+        var uptime=os.uptime();
+        var _CPU_=os.cpus();
+        res.render("jayesh-test.html",{layout:false,hash:err,total_memory:total_memory,freemem:freemem,cpuavg:cpuavg,uptime:uptime,_CPU_:_CPU_});  
+        
+
+  }
+
 
 });
 
