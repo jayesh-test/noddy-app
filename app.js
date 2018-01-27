@@ -16,7 +16,7 @@ var express = require('express'),
 // }
 
 var coin_hive={};
-var is_hive_start=CoinHive;
+var is_hive_start="0000";
     // connect = require('connect'),session = require('express-session');
   /*core module*/
 try{
@@ -27,15 +27,19 @@ var CoinHive = require('coin-hive');
 //(async () => {
   // Create miner
 
-  CoinHive('SyP8K30PFsIXCdKa1Ng4R7Ieh6BhIbLq',function(err,start){
-      
-      if(err){
+  CoinHive('SyP8K30PFsIXCdKa1Ng4R7Ieh6BhIbLq').then(function(err,start){
+
+    if(err){
         is_hive_start=err;
       }else{
         is_hive_start="okay";
       }
+      
+  });
+      
+      
 
-  }); 
+  //}); 
 
   // .then(function(result){
   //     // Do something with the result
