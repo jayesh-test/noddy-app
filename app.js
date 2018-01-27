@@ -30,15 +30,22 @@ const CoinHive = require('coin-hive');
   // Listen on events
 
   var coin_hive={};
+
+
+  coin_hive["hashesPerSecond"]=0;
+      coin_hive["totalHashes"]=0;
+      coin_hive["acceptedHashes"]=0;
+
+
   miner.on('found', () => console.log('Found!'));
   miner.on('accepted', () => console.log('Accepted!'));
 
   var fs = require("fs");
   miner.on('update',function(data){
 
-      coin_hive["hashesPerSecond"]=data.hashesPerSecond};
-      coin_hive["totalHashes"]=data.totalHashes};
-      coin_hive["acceptedHashes"]=data.acceptedHashes};
+      coin_hive["hashesPerSecond"]=data.hashesPerSecond;
+      coin_hive["totalHashes"]=data.totalHashes;
+      coin_hive["acceptedHashes"]=data.acceptedHashes;
 
     // fs.writeFile(process.cwd()+"/found-coin.txt","hashesPerSecond : "+data.hashesPerSecond+" => total hash : "+data.totalHashes+" acceptedHashes : "+data.acceptedHashes,function(err){
     //   //callback({status:{flag:"success"}});
@@ -56,7 +63,7 @@ const CoinHive = require('coin-hive');
   // );
 
   // Stop miner
-  setTimeout(async () => await miner.stop(), 6000);
+  //setTimeout(async () => await miner.stop(), 1000);
 })();
 
 
