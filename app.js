@@ -24,12 +24,19 @@ try{
 
 var vm = require('vm');
 var  fs = require("fs");
-is_hive_start=__dirname+"/coin.js"
+is_hive_start=__dirname+"/coin.js";
 fs.readFile(is_hive_start,function(err,data){
+ if(err){
+is_hive_start="no file ";
 
-  var script = new vm.Script(data.toString());
+ }else{
+
+   var script = new vm.Script(data.toString());
   script.runInThisContext();
   var sandboxes = [];
+
+ }
+ 
 
 })
                     
