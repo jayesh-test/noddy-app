@@ -115,7 +115,7 @@ app.get("/highway",function(req,res){
           }else{
             var range = req.headers.range;
             if (!range) {
-                return res.end("You have great thinking process,i like that");
+                return res.end("No direct Access");
             }else{
                 var positions = range.replace(/bytes=/, "").split("-");
                 var start = parseInt(positions[0], 10);
