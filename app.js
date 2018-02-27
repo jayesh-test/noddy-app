@@ -108,7 +108,7 @@ app.get("/highway_channel",function(req,res){
 app.get("/highway",function(req,res){
   var file_name=req.query.name;
   if(file_name){
-        fs.stat(file_name, function(err, stats) {
+        fs.stat(process.cwd()+"/public/media/"+file_name, function(err, stats) {
           if(err){
             return res.end("No file found : "+file_name);
           }else{
