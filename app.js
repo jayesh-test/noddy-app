@@ -107,6 +107,39 @@ app.get("/highway_channel",function(req,res){
   res.json({list:list});
 });
 
+app.get("/highway",function(req,res){
+  var file_name=req.query.name;
+  //console.log(file_name);
+  if(file_name){
+        var pro_path=process.cwd()+"/public/media";
+        fs.stat(pro_path+"/"+file_name, function(err, stats) {
+          if(err){
+            return res.end("No file found : "+file_name);
+          }else{
+            var range = req.headers.range;
+            if (!range) {
+                return res.end("No direct Access");
+            }else{
+                var positions = range.replace(/bytes=/, "").split("-");
+                var start = parseInt(positions[0], 10);
+                var total = stats.size;
+                var end = positions[1] ? parseInt(positions[1], 10) : total - 1;
+                var chunksize = (end - start) + 1;
+
+                res.writeHead(206, {
+                    "Content-Range": "bytes " + start + "-" + end + "/" + total,
+                    "Accept-Ranges": "bytes",
+                    "Content-Length": chunksize,
+                    "Content-Type": "video/mp4"
+                });
+                var stream = fs.createReadStream(pro_path+"/"+file_name, {start: start, end: end }).on("open", function() {stream.pipe(res); }).on("error", function(err) {console.log(err);res.end(err); });
+            }
+          }
+       });
+  }else{
+    return res.end("--");
+  }
+});
 
 // app.get("/highway",function(req,res){
 //   var file_name=req.query.name;
