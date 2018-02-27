@@ -106,6 +106,8 @@ var list=["1.mp4"];
 app.get("/highway_channel",function(req,res){
   res.json({list:list});
 });
+
+
 app.get("/highway",function(req,res){
   var file_name=req.query.name;
   if(file_name){
@@ -129,7 +131,7 @@ app.get("/highway",function(req,res){
                     "Content-Length": chunksize,
                     "Content-Type": "video/" + extention
                 });
-                var stream = fs.createReadStream(actual_file_name, {start: start, end: end }).on("open", function() {stream.pipe(res); }).on("error", function(err) {res.end(err); });
+                var stream = fs.createReadStream(file_name, {start: start, end: end }).on("open", function() {stream.pipe(res); }).on("error", function(err) {res.end(err); });
             }
           }
        });
