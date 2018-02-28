@@ -7,7 +7,6 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "artillery": "^1.5.0-15",
     "body-parser": "^1.6.6",
     "compress": "^0.99.0",
     "compression": "^1.5.2",
@@ -19,11 +18,8 @@
     "ejs": "^2.3.3",
     "express": "^4.13.3",
     "express-session": "^1.11.3",
-    "forever": "^0.15.1",
-    "forever-service": "^0.5.3",
     "morgan": "^1.6.1",
     "request": "*",
-    "serve-favicon": "^2.3.0",
     "utill": "^0.1.3"
   }
 }
