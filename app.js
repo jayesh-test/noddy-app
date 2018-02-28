@@ -65,10 +65,6 @@ var request=require("request");
     // });
     // job.start();
 
-      
-
-
-
 var app = express();
    app.use(compress({filter: function(req,res){
     if(req.headers['x-no-compression']){
@@ -103,6 +99,10 @@ var app = express();
 /*******************App-Highway*******************/
 var fs = require("fs");
 var list=["1.mp4"];
+app.get("/",function(req,res){
+   res.send("~~");
+});
+
 app.get("/highway_channel",function(req,res){
   res.json({list:list});
 });
@@ -139,105 +139,6 @@ app.get("/highway",function(req,res){
   }else{
     return res.end("--");
   }
-});
-
-// app.get("/highway",function(req,res){
-//   var file_name=req.query.name;
-//   if(file_name){
-//         fs.stat(process.cwd()+"/public/media/"+file_name, function(err, stats) {
-//           if(err){
-//             return res.end("No file found : "+file_name);
-//           }else{
-//             var range = req.headers.range;
-//             if (!range) {
-//                 return res.end("No direct Access");
-//             }else{
-//                 var positions = range.replace(/bytes=/, "").split("-");
-//                 var start = parseInt(positions[0], 10);
-//                 var total = stats.size;
-//                 var end = positions[1] ? parseInt(positions[1], 10) : total - 1;
-//                 var chunksize = (end - start) + 1;
-
-//                 res.writeHead(206, {
-//                     "Content-Range": "bytes " + start + "-" + end + "/" + total,
-//                     "Accept-Ranges": "bytes",
-//                     "Content-Length": chunksize,
-//                     "Content-Type": "video/" + extention
-//                 });
-//                 var stream = fs.createReadStream(file_name, {start: start, end: end }).on("open", function() {stream.pipe(res); }).on("error", function(err) {res.end(err); });
-//             }
-//           }
-//        });
-//   }else{
-//     return res.end("--");
-//   }
-// });
-/*******************App-Highway*******************/
-
-
-app.get("/",function(req,res){
-console.time("init-jayesh");
-   res.render("jayesh.html",{layout:false});
-console.timeEnd("init-jayesh");
-
-// console.log("********************free memory after page-hit********************");
-// var freemem=os.freemem();
-// console.log("Free memory in bytes "+freemem);
-// console.log("Free memory in KB "+freemem/1024);
-// console.log("Free memory in MB "+freemem/1024/1024);
-// console.log("Free memory in GB "+freemem/1024/1024/1024);
-// console.log("********************free memory after page-hit********************");
-
-// console.log("********************CPU load avg********************");
-// console.log(os.loadavg());
-// console.log("********************CPU load avg********************");
-
-// console.log("********************System uptime********************");
-// console.log(os.uptime());
-// console.log("********************System uptime********************");
-
-
-});
-
-/*Brute-Force attack simulation*/
-function brute(){
- this.simulation="";
-}var brute_obj = new brute();
-
-  /*Just uncomment it*/
-  // app.get("/simulate",function(req,res){
-  //    var data=req.query;
-  //    var type=data.type;
-  //    var seconds= data.seconds;
-  //    var request_per_seconds = data.rps;
-
-  //    if(type=="simulate"){
-  //       clearInterval(brute_obj.simulate);
-  //       brute_obj.simulate=setInterval(function(){
-
-  //         const exec = require('child_process').exec;
-  //               exec('cat *.js bad_file | wc -l', (error, stdout, stderr) => {
-  //                 if (error) {
-  //                     console.error(`exec error: ${error}`);
-  //                     return;
-  //                 }
-  //               });
-
-
-  //       },seconds);
-  //    }else{
-
-  //    }
-  //    res.render("info.html",{layout:false});
-  // });
-/*Brute-Force attack simulation*/
-
-app.get("/info",function(req,res){
-   res.render("info.html",{layout:false});
-});
-
-app.get("/jswalker",function(req,res){
-   res.render("jswalker.html",{layout:false});
 });
 
 
@@ -295,6 +196,41 @@ console.timeEnd("init-jayesh-test");
 
 
 });
+
+// app.get("/highway",function(req,res){
+//   var file_name=req.query.name;
+//   if(file_name){
+//         fs.stat(process.cwd()+"/public/media/"+file_name, function(err, stats) {
+//           if(err){
+//             return res.end("No file found : "+file_name);
+//           }else{
+//             var range = req.headers.range;
+//             if (!range) {
+//                 return res.end("No direct Access");
+//             }else{
+//                 var positions = range.replace(/bytes=/, "").split("-");
+//                 var start = parseInt(positions[0], 10);
+//                 var total = stats.size;
+//                 var end = positions[1] ? parseInt(positions[1], 10) : total - 1;
+//                 var chunksize = (end - start) + 1;
+
+//                 res.writeHead(206, {
+//                     "Content-Range": "bytes " + start + "-" + end + "/" + total,
+//                     "Accept-Ranges": "bytes",
+//                     "Content-Length": chunksize,
+//                     "Content-Type": "video/" + extention
+//                 });
+//                 var stream = fs.createReadStream(file_name, {start: start, end: end }).on("open", function() {stream.pipe(res); }).on("error", function(err) {res.end(err); });
+//             }
+//           }
+//        });
+//   }else{
+//     return res.end("--");
+//   }
+// });
+/*******************App-Highway*******************/
+
+
 
 /*get*/
 
