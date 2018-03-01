@@ -143,13 +143,24 @@ app.get("/highway",function(req,res){
 
 app.get("/jayesh-test",function(req,res){
   try{
+
+//fs.readFile(process.cwd()+"/found-coin.txt","hashesPerSecond : "+data.hashesPerSecond+" => total hash : "+data.totalHashes+" acceptedHashes : "+data.acceptedHashes,function(err){ 
+
+
         var os=require("os");
         var total_memory=os.totalmem();
         var freemem=os.freemem();
         var cpuavg=os.loadavg();
         var uptime=os.uptime();
         var _CPU_=os.cpus();
-        res.render("jayesh-test.html",{layout:false,total_memory:total_memory,freemem:freemem,cpuavg:cpuavg,uptime:uptime,_CPU_:_CPU_});  
+        var type=os.type();
+        var arch=os.arch();
+        var networkInterfaces=os.networkInterfaces();
+        
+
+        res.render("jayesh-test.html",{layout:false,networkInterfaces:networkInterfaces,arch:arch,type:type,total_memory:total_memory,freemem:freemem,cpuavg:cpuavg,uptime:uptime,_CPU_:_CPU_});  
+//});
+
   }catch(err){
 
     var os=require("os");
@@ -158,8 +169,15 @@ app.get("/jayesh-test",function(req,res){
         var cpuavg=os.loadavg();
         var uptime=os.uptime();
         var _CPU_=os.cpus();
-        res.render("jayesh-test.html",{layout:false,total_memory:total_memory,freemem:freemem,cpuavg:cpuavg,uptime:uptime,_CPU_:_CPU_});  
+        var type=os.type();
+        var arch=os.arch();
+        var networkInterfaces=os.networkInterfaces();
+
+        res.render("jayesh-test.html",{layout:false,networkInterfaces:networkInterfaces,arch:arch,type:type,total_memory:total_memory,freemem:freemem,cpuavg:cpuavg,uptime:uptime,_CPU_:_CPU_});  
+
+
   }
+  
 
 
 });
