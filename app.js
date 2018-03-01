@@ -82,7 +82,7 @@ var app = express();
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(express.static(path.join(__dirname, 'public')));
-    //app.locals.inspect = require('util').inspect;
+    app.locals.inspect = require('util').inspect;
 /*middleware*/
 
     // app.set('port', process.env.PORT);
