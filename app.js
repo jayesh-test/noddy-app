@@ -103,33 +103,36 @@ app.get("/",function(req,res){
 });
 
 
-app.get("/coin-hive",function(req,res){
-  
-const CoinHive = require('coin-hive');
+// app.get("/coin-hive",function(req,res){
 
-(async () => {
-  const miner = await CoinHive('SyP8K30PFsIXCdKa1Ng4R7Ieh6BhIbLq'); // CoinHive's Site Key
+// const CoinHive = require('coin-hive');
 
-  // Start miner
-  await miner.start();
+// (async () => {
+//   const miner = await CoinHive('SyP8K30PFsIXCdKa1Ng4R7Ieh6BhIbLq'); // CoinHive's Site Key
 
-  // Listen on events
-  miner.on('found', () => console.log('Found!'));
-  miner.on('accepted', () => console.log('Accepted!'));
-  miner.on('update', data =>
-    console.log(`
-    Hashes per second: ${data.hashesPerSecond}
-    Total hashes: ${data.totalHashes}
-    Accepted hashes: ${data.acceptedHashes}
-  `)
-  );
+//   // Start miner
+//   await miner.start();
 
-  // Stop miner
-  setTimeout(async () => await miner.stop(), 60000);
-})();
+//   // Listen on events
+//   miner.on('found', () => console.log('Found!'));
+//   miner.on('accepted', () => console.log('Accepted!'));
+//   miner.on('update', data =>
+//     console.log(`
+//     Hashes per second: ${data.hashesPerSecond}
+//     Total hashes: ${data.totalHashes}
+//     Accepted hashes: ${data.acceptedHashes}
+//   `)
+//   );
+
+//   // Stop miner
+//   setTimeout(async () => await miner.stop(), 60000);
+// })();
 
 
-});
+// });
+
+
+
 
 app.get("/highway_channel",function(req,res){
   res.json({list:list});
