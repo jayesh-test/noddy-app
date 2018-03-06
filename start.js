@@ -1,60 +1,90 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+var debug = require('debug')('myapp:server');
 var http = require('http');
-var fs = require('fs');
-var path = require('path');
-var url = require("url");
 
+/**
+ * Get port from environment and store in Express.
+ */
 
-// require('speedtest-net')().on('uploadspeed', speed => {
-//   console.log('Upload speed:',(speed * 125).toFixed(2),'KB/s');
-// });
+var port = normalizePort(process.env.PORT || '5000');
+app.set('port', port);
 
-// require('speedtest-net')().on('downloadspeed', speed => {
-//   console.log('Download speed:', (speed * 125).toFixed(2), 'KB/s');
-// });
+/**
+ * Create HTTP server.
+ */
 
-http.createServer(function (request, response) {
-     
-     var queryData = url.parse(request.url, true).query;
-     var pro_path=process.cwd()+"/public/media";
+var server = http.createServer(app);
 
-     //if(queryData){
-        if(queryData.tag){
-            var file_name=pro_path+"/"+queryData.tag;
-            fs.stat(file_name,function(err, stats) {
-              if(err){
-                return response.end("No file found : "+file_name);
-              }else{
-                var range = request.headers.range;
-                if (!range) {
-                    //return response.end("-");
+/**
+ * Listen on provided port, on all network interfaces.
+ */
 
-                    response.write("<html><body><video src='/?tag="+queryData.tag+"' controls=true> autoplay=true </video> </body></html>");
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
 
-                }else{
-                    var positions = range.replace(/bytes=/, "").split("-");
-                    var start = parseInt(positions[0], 10);
-                    var total = stats.size;
-                    var end = positions[1] ? parseInt(positions[1], 10) : total - 1;
-                    var chunksize = (end - start) + 1;
+/**
+ * Normalize a port into a number, string, or false.
+ */
 
-                    response.writeHead(206, {
-                        "Content-Range": "bytes " + start + "-" + end + "/" + total,
-                        "Accept-Ranges": "bytes",
-                        "Content-Length": chunksize,
-                        "Content-Type": "video/mp4"
-                    });
-                    var stream = fs.createReadStream(file_name,{start: start, end: end }).on("open", function() {stream.pipe(response); }).on("error", function(err) {console.log(err);res.end(err); });
-                }
-              }
-           });
-        }else{
-          response.write("<html><body><video src='/?tag=0.mp4' controls=true> autoplay=true </video> </body></html>");
-          response.end();
-        }
-     // }else{
-     //      response.write("<html><body><video src='/?tag=1.mp4' controls=true> autoplay=true </video> </body></html>");
-     //      response.end();
-     // }
+function normalizePort(val) {
+  var port = parseInt(val, 10);
 
-}).listen(process.env.PORT || 5000 );
-console.log('Server running...');
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}

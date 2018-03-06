@@ -99,7 +99,7 @@ var app = express();
 var fs = require("fs");
 var list=["1.mp4"];
 app.get("/",function(req,res){
-   res.send("<video src='/media/1.mp4' autoplay=true controls=true ></video>");
+   res.send("~~");
 });
 
 
