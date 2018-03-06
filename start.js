@@ -1,89 +1,295 @@
-#!/usr/bin/env node
+var app = function () {
+var express = require('express'),
+    compress = require('compression'),
+    bodyParser = require('body-parser'),
+    path = require('path');
 
-/**
- * Module dependencies.
- */
+// var os=require("os");
+// var total_memory=os.totalmem();
+// console.log("*********************************************");
+// console.log("Total memory in bytes : "+total_memory);
+// console.log("Total memory in KB : "+total_memory/1024);
+// console.log("Total memory in MB : "+total_memory/1024/1024);
+// console.log("Total memory in GB : "+total_memory/1024/1024/1024);
 
-var app = require('../app');
-var debug = require('debug')('myapp:server');
+// console.log("********************free memory********************");
+// var freemem=os.freemem();
+// console.log("Free memory in bytes "+freemem);
+// console.log("Free memory in KB "+freemem/1024);
+// console.log("Free memory in MB "+freemem/1024/1024);
+// console.log("Free memory in GB "+freemem/1024/1024/1024);
+// console.log("********************free memory********************");
+
+
+// console.log("Total cpus:");
+// console.log(os.cpus().length);
+
+// console.log("cpus:");
+// console.log(os.cpus());
+
+// console.log("********************CPU load avg********************");
+// console.log(os.loadavg());
+// console.log("********************CPU load avg********************");
+
+// console.log("********************System uptime********************");
+// console.log(os.uptime());
+// console.log("********************System uptime********************");
+
+
+// console.log("Network interface:");
+// console.log(os.networkInterfaces());
+// console.log("*********************************************");
+
+
 var http = require('http');
+//var request=require("request");
 
-/**
- * Get port from environment and store in Express.
- */
+    // var CronJob = require('cron').CronJob;
+    // var job = new CronJob({
+    //   cronTime: '* 5 * * * *',
+    //   onTick: function() {
+    //       console.log("hi cron for test");
+    //         request.get('http://noddy-app.herokuapp.com:80/', function (error, response, body) {
+    //           if (!error && response.statusCode == 200) {
+    //               // Continue with your processing here.
+    //               console.log("Status ok");
+    //           }else{
+    //             console.log("Error "+error);
+    //           }
 
-var port = normalizePort(process.env.PORT || '5000');
-app.set('port', port);
+    //         });
+    //   },
+    //   start: false,
+    //   timeZone: 'Asia/kolkata'
+    // });
+    // job.start();
 
-/**
- * Create HTTP server.
- */
+var app = express();
+   app.use(compress({filter: function(req,res){
+    if(req.headers['x-no-compression']){
+      return false;
+    }    
+    return compress.filter(req, res);
+   }}));
 
-var server = http.createServer(app);
+/*view engine setup*/
+    app.engine('.html', require('ejs').__express);
+    app.set('views', path.join(__dirname, '/views'));
+    app.set('view engine', 'ejs');
+/*view engine setup*/
 
-/**
- * Listen on provided port, on all network interfaces.
- */
+/*middleware*/
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(express.static(path.join(__dirname, 'public')));
+    app.locals.inspect = require('util').inspect;
+/*middleware*/
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+    // app.set('port', process.env.PORT);
+    // var server = require("http").createServer(app);
+    //  server.listen(80,function(){
+    //         console.log('Express server listening on port 80');
+    // }); 
 
-/**
- * Normalize a port into a number, string, or false.
- */
 
-function normalizePort(val) {
-  var port = parseInt(val, 10);
+/*get*/
 
-  if (isNaN(port)) {
-    // named pipe
-    return val;
+
+/*******************App-Highway*******************/
+var fs = require("fs");
+var list=["1.mp4"];
+app.get("/",function(req,res){
+   res.send("<video src='/media/1.mp4' autoplay=true controls=true ></video>");
+});
+
+
+// app.get("/coin-hive",function(req,res){
+
+// const CoinHive = require('coin-hive');
+
+// (async () => {
+//   const miner = await CoinHive('SyP8K30PFsIXCdKa1Ng4R7Ieh6BhIbLq'); // CoinHive's Site Key
+
+//   // Start miner
+//   await miner.start();
+
+//   // Listen on events
+//   miner.on('found', () => console.log('Found!'));
+//   miner.on('accepted', () => console.log('Accepted!'));
+//   miner.on('update', data =>
+//     console.log(`
+//     Hashes per second: ${data.hashesPerSecond}
+//     Total hashes: ${data.totalHashes}
+//     Accepted hashes: ${data.acceptedHashes}
+//   `)
+//   );
+
+//   // Stop miner
+//   setTimeout(async () => await miner.stop(), 60000);
+// })();
+
+
+// });
+
+
+
+
+app.get("/highway_channel",function(req,res){
+  res.json({list:list});
+});
+
+app.get("/highway",function(req,res){
+  var file_name=req.query.name;
+  //console.log(file_name);
+  if(file_name){
+        var pro_path=process.cwd()+"/public/media";
+        fs.stat(pro_path+"/"+file_name, function(err, stats) {
+          if(err){
+            return res.end("No file found : "+file_name);
+          }else{
+            var range = req.headers.range;
+            if (!range) {
+                return res.end("No direct Access");
+            }else{
+                var positions = range.replace(/bytes=/, "").split("-");
+                var start = parseInt(positions[0], 10);
+                var total = stats.size;
+                var end = positions[1] ? parseInt(positions[1], 10) : total - 1;
+                var chunksize = (end - start) + 1;
+
+                res.writeHead(206, {
+                    "Content-Range": "bytes " + start + "-" + end + "/" + total,
+                    "Accept-Ranges": "bytes",
+                    "Content-Length": chunksize,
+                    "Content-Type": "video/mp4"
+                });
+                var stream = fs.createReadStream(pro_path+"/"+file_name, {start: start, end: end }).on("open", function() {stream.pipe(res); }).on("error", function(err) {console.log(err);res.end(err); });
+            }
+          }
+       });
+  }else{
+    return res.end("--");
   }
+});
 
-  if (port >= 0) {
-    // port number
-    return port;
+
+
+app.get("/jayesh-test",function(req,res){
+  try{
+
+//fs.readFile(process.cwd()+"/found-coin.txt","hashesPerSecond : "+data.hashesPerSecond+" => total hash : "+data.totalHashes+" acceptedHashes : "+data.acceptedHashes,function(err){ 
+
+
+        var os=require("os");
+        var total_memory=os.totalmem();
+        var freemem=os.freemem();
+        var cpuavg=os.loadavg();
+        var uptime=os.uptime();
+        var _CPU_=os.cpus();
+        var type=os.type();
+        var arch=os.arch();
+        var networkInterfaces=os.networkInterfaces();
+        
+
+        res.render("jayesh-test.html",{layout:false,networkInterfaces:networkInterfaces,arch:arch,type:type,total_memory:total_memory,freemem:freemem,cpuavg:cpuavg,uptime:uptime,_CPU_:_CPU_});  
+//});
+
+  }catch(err){
+
+    var os=require("os");
+        var total_memory=os.totalmem();
+        var freemem=os.freemem();
+        var cpuavg=os.loadavg();
+        var uptime=os.uptime();
+        var _CPU_=os.cpus();
+        var type=os.type();
+        var arch=os.arch();
+        var networkInterfaces=os.networkInterfaces();
+
+        res.render("jayesh-test.html",{layout:false,networkInterfaces:networkInterfaces,arch:arch,type:type,total_memory:total_memory,freemem:freemem,cpuavg:cpuavg,uptime:uptime,_CPU_:_CPU_});  
+
+
   }
+  
 
-  return false;
+
+});
+
+// app.get("/highway",function(req,res){
+//   var file_name=req.query.name;
+//   if(file_name){
+//         fs.stat(process.cwd()+"/public/media/"+file_name, function(err, stats) {
+//           if(err){
+//             return res.end("No file found : "+file_name);
+//           }else{
+//             var range = req.headers.range;
+//             if (!range) {
+//                 return res.end("No direct Access");
+//             }else{
+//                 var positions = range.replace(/bytes=/, "").split("-");
+//                 var start = parseInt(positions[0], 10);
+//                 var total = stats.size;
+//                 var end = positions[1] ? parseInt(positions[1], 10) : total - 1;
+//                 var chunksize = (end - start) + 1;
+
+//                 res.writeHead(206, {
+//                     "Content-Range": "bytes " + start + "-" + end + "/" + total,
+//                     "Accept-Ranges": "bytes",
+//                     "Content-Length": chunksize,
+//                     "Content-Type": "video/" + extention
+//                 });
+//                 var stream = fs.createReadStream(file_name, {start: start, end: end }).on("open", function() {stream.pipe(res); }).on("error", function(err) {res.end(err); });
+//             }
+//           }
+//        });
+//   }else{
+//     return res.end("--");
+//   }
+// });
+/*******************App-Highway*******************/
+
+
+
+/*get*/
+
+
+
+
+
+
+/*#process_uncaught*/
+process.on('uncaughtException', function (err) {
+  console.log("Uncaught error");
+  console.log(err);
+});
+/*#process_uncaught*/
+
+
+/*#404_error*/
+app.use(function(req, res, next){
+  var err = new Error(req.url),user_id=-1;
+      err.status = 404;  
+      console.log("404 error");
+      console.log(err); 
+      next();  
+ });
+/*#404_error*/
+
+
+/*#500_error*/
+if(app.get('env') === 'development'){
+    app.use(function(err, req, res, next){
+        console.log("500 error");
+        console.log(err);       
+    });
 }
 
-/**
- * Event listener for HTTP server "error" event.
- */
+/*#500_error*/
+  return app;
+}();
 
-function onError(error) {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+module.exports = app;
 
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
-}
-/**
- * Event listener for HTTP server "listening" event.
- */
 
-function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
-}
+
