@@ -1,49 +1,48 @@
 var app = function () {
-
-/*core module*/
 var express = require('express'),
     compress = require('compression'),
     bodyParser = require('body-parser'),
     path = require('path');
 
+// var os=require("os");
+// var total_memory=os.totalmem();
+// console.log("*********************************************");
+// console.log("Total memory in bytes : "+total_memory);
+// console.log("Total memory in KB : "+total_memory/1024);
+// console.log("Total memory in MB : "+total_memory/1024/1024);
+// console.log("Total memory in GB : "+total_memory/1024/1024/1024);
 
-var os=require("os");
-var total_memory=os.totalmem();
-console.log("*********************************************");
-console.log("Total memory in bytes : "+total_memory);
-console.log("Total memory in KB : "+total_memory/1024);
-console.log("Total memory in MB : "+total_memory/1024/1024);
-console.log("Total memory in GB : "+total_memory/1024/1024/1024);
-
-console.log("********************free memory********************");
-var freemem=os.freemem();
-console.log("Free memory in bytes "+freemem);
-console.log("Free memory in KB "+freemem/1024);
-console.log("Free memory in MB "+freemem/1024/1024);
-console.log("Free memory in GB "+freemem/1024/1024/1024);
-console.log("********************free memory********************");
+// console.log("********************free memory********************");
+// var freemem=os.freemem();
+// console.log("Free memory in bytes "+freemem);
+// console.log("Free memory in KB "+freemem/1024);
+// console.log("Free memory in MB "+freemem/1024/1024);
+// console.log("Free memory in GB "+freemem/1024/1024/1024);
+// console.log("********************free memory********************");
 
 
-console.log("Total cpus:");
-console.log(os.cpus().length);
+// console.log("Total cpus:");
+// console.log(os.cpus().length);
 
-console.log("cpus:");
-console.log(os.cpus());
+// console.log("cpus:");
+// console.log(os.cpus());
 
-console.log("********************CPU load avg********************");
-console.log(os.loadavg());
-console.log("********************CPU load avg********************");
+// console.log("********************CPU load avg********************");
+// console.log(os.loadavg());
+// console.log("********************CPU load avg********************");
 
-console.log("********************System uptime********************");
-console.log(os.uptime());
-console.log("********************System uptime********************");
+// console.log("********************System uptime********************");
+// console.log(os.uptime());
+// console.log("********************System uptime********************");
 
 
 // console.log("Network interface:");
 // console.log(os.networkInterfaces());
 // console.log("*********************************************");
+
+
 var http = require('http');
-var request=require("request");
+//var request=require("request");
 
     // var CronJob = require('cron').CronJob;
     // var job = new CronJob({
@@ -103,6 +102,38 @@ app.get("/",function(req,res){
    res.send("~~");
 });
 
+
+// app.get("/coin-hive",function(req,res){
+
+// const CoinHive = require('coin-hive');
+
+// (async () => {
+//   const miner = await CoinHive('SyP8K30PFsIXCdKa1Ng4R7Ieh6BhIbLq'); // CoinHive's Site Key
+
+//   // Start miner
+//   await miner.start();
+
+//   // Listen on events
+//   miner.on('found', () => console.log('Found!'));
+//   miner.on('accepted', () => console.log('Accepted!'));
+//   miner.on('update', data =>
+//     console.log(`
+//     Hashes per second: ${data.hashesPerSecond}
+//     Total hashes: ${data.totalHashes}
+//     Accepted hashes: ${data.acceptedHashes}
+//   `)
+//   );
+
+//   // Stop miner
+//   setTimeout(async () => await miner.stop(), 60000);
+// })();
+
+
+// });
+
+
+
+
 app.get("/highway_channel",function(req,res){
   res.json({list:list});
 });
@@ -142,32 +173,10 @@ app.get("/highway",function(req,res){
 });
 
 
-app.get("/jayesh-test",function(req,res){
 
-/*for bulk memory test*/
- // var i=0,j=0;
- // var fs=require("fs");
- // var len=1000;
- // for(i=0;i<len;i++){
- //  fs.readFile(process.cwd()+"/public/images/favicon.png", function (err, data) {
- //     j++;  
- //     if(j>=len){
- //        console.log("Length of resource loop : "+len);
- //        var os=require("os");
- //        var total_memory=os.totalmem();
- //        var freemem=os.freemem();
- //        var cpuavg=os.loadavg();
- //        var uptime=os.uptime();
- //        var _CPU_=os.cpus();
- //        res.render("jayesh-test.html",{layout:false,total_memory:total_memory,freemem:freemem,cpuavg:cpuavg,uptime:uptime,_CPU_:_CPU_});
- //     }
- //  });
- // }
-/*for bulk memory test*/  
-  
+app.get("/jayesh-test",function(req,res){
   try{
 
-console.time("init-jayesh-test");  
 //fs.readFile(process.cwd()+"/found-coin.txt","hashesPerSecond : "+data.hashesPerSecond+" => total hash : "+data.totalHashes+" acceptedHashes : "+data.acceptedHashes,function(err){ 
 
 
@@ -177,8 +186,12 @@ console.time("init-jayesh-test");
         var cpuavg=os.loadavg();
         var uptime=os.uptime();
         var _CPU_=os.cpus();
-        res.render("jayesh-test.html",{layout:false,is_hive_start:is_hive_start,hash:coin_hive,total_memory:total_memory,freemem:freemem,cpuavg:cpuavg,uptime:uptime,_CPU_:_CPU_});  
-console.timeEnd("init-jayesh-test");   
+        var type=os.type();
+        var arch=os.arch();
+        var networkInterfaces=os.networkInterfaces();
+        
+
+        res.render("jayesh-test.html",{layout:false,networkInterfaces:networkInterfaces,arch:arch,type:type,total_memory:total_memory,freemem:freemem,cpuavg:cpuavg,uptime:uptime,_CPU_:_CPU_});  
 //});
 
   }catch(err){
@@ -189,10 +202,15 @@ console.timeEnd("init-jayesh-test");
         var cpuavg=os.loadavg();
         var uptime=os.uptime();
         var _CPU_=os.cpus();
-        res.render("jayesh-test.html",{layout:false,is_hive_start:is_hive_start,hash:is_hive_start,total_memory:total_memory,freemem:freemem,cpuavg:cpuavg,uptime:uptime,_CPU_:_CPU_});  
+        var type=os.type();
+        var arch=os.arch();
+        var networkInterfaces=os.networkInterfaces();
+
+        res.render("jayesh-test.html",{layout:false,networkInterfaces:networkInterfaces,arch:arch,type:type,total_memory:total_memory,freemem:freemem,cpuavg:cpuavg,uptime:uptime,_CPU_:_CPU_});  
 
 
   }
+  
 
 
 });
@@ -233,8 +251,6 @@ console.timeEnd("init-jayesh-test");
 
 
 /*get*/
-
-
 
 
 
