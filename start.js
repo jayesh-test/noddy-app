@@ -26,7 +26,10 @@ http.createServer(function (request, response) {
               }else{
                 var range = request.headers.range;
                 if (!range) {
-                    return response.end("-");
+                    //return response.end("-");
+
+                    response.write("<html><body><video src='/?tag="+queryData.tag+"' controls=true> autoplay=true </video> </body></html>");
+
                 }else{
                     var positions = range.replace(/bytes=/, "").split("-");
                     var start = parseInt(positions[0], 10);
