@@ -6,6 +6,8 @@ var cluster = require('cluster');
 var http = require('http');
 var numCPUs = require('os').cpus().length;
 
+//console.log("CPU count = "+numCPUs);
+
 if (cluster.isMaster) {
   // Fork workers.
   for (var i = 0; i < numCPUs; i++) {
@@ -18,8 +20,6 @@ if (cluster.isMaster) {
 } else {  
   app.listen(port);  
 }
-
-
 
 
 /*single process*/

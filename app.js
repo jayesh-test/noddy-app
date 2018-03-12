@@ -255,6 +255,41 @@ app.get("/jayesh-test",function(req,res){
 
 
 
+/*################################################################*/
+var fs = require("fs");
+app.get("/story_index",function(req,res){
+    /*Get story_index*/
+    fs.readFile(process.cwd()+"/public/story-block/story_slot.txt","utf-8",function(err,data){
+       if(err){
+        res.json({index:"0-0"});
+       }else{
+        res.json({index:data}); 
+       }
+    });
+});
+
+app.get("/story_load",function(req,res){
+  /*Story index*/
+  var index = req.query.index;
+
+  fs.stat(process.cwd()+"/public/story-block/story/"+index+".txt",function(err,data){
+    if(err){
+        res.json({index:0,image_path:0});
+    }else{
+          fs.readFile(process.cwd()+"/public/story-block/story/"+index+".txt","utf-8",function(err1,data1){
+               if(err){
+                res.json({index:0,image_path:0});
+               }else{
+                res.json({index:index,image_path:"/story-block/story/"+index+".jpg",story_text:data1.toString()});
+               }
+          });
+    }
+  });
+  
+});
+/*################################################################*/
+
+
 
 
 /*#process_uncaught*/
