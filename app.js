@@ -103,6 +103,16 @@ app.get("/",function(req,res){
 });
 
 
+
+/*B-Video*/
+app.get("/bvideo",function(req,res){
+  var lot_json = require(process.cwd()+"/public/b-video/lot.json");
+  res.json({list:lot_json});
+});
+/*B-Video*/
+
+
+
 // app.get("/coin-hive",function(req,res){
 
 // const CoinHive = require('coin-hive');
@@ -130,7 +140,6 @@ app.get("/",function(req,res){
 
 
 // });
-
 
 
 
