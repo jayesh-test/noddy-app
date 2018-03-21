@@ -107,10 +107,42 @@ app.get("/",function(req,res){
 /*B-Video*/
 app.get("/bvideo",function(req,res){
   var lot_json = require(process.cwd()+"/public/b-video/lot.json");
+
+//   console.log(lot_json);
+
+// var distinct = [];
+
+// for(i in lot_json){
+
+//   console.log(lot_json[i].video);
+
+//    if(lot_json[i].video.length>0){
+//       var k=0;
+//       for(j in lot_json[i].video){
+
+//         //console.log( distinct.indexOf(lot_json[i].video[j]) );
+
+//         if(distinct.indexOf(lot_json[i].video[j]) > -1 ){
+
+//           //console.log("Delete "+lot_json[i].video[j]);
+//           delete lot_json[i].video[j];
+          
+//         }else{
+//           //console.log("Pushed "+lot_json[i].video[j]);
+//           distinct.push(lot_json[i].video[j]); 
+//         }
+//         //console.log(distinct);
+//         //console.log(video_list[i].video[j]);
+//       }
+
+//    }
+// }
+
+
+  //console.log(lot_json);
   res.json({list:lot_json});
 });
 /*B-Video*/
-
 
 
 // app.get("/coin-hive",function(req,res){
