@@ -103,6 +103,12 @@ app.get("/",function(req,res){
 });
 
 
+/*B-Video*/
+app.get("/mvideo",function(req,res){
+  var lot_json = require(process.cwd()+"/public/m-video/lot.json");
+  res.json({lot:lot_json});
+});
+
 
 /*B-Video*/
 app.get("/bvideo",function(req,res){
@@ -140,7 +146,7 @@ app.get("/bvideo",function(req,res){
 
 
   //console.log(lot_json);
-  res.json({list:lot_json});
+  res.json({lot:lot_json});
 });
 /*B-Video*/
 
