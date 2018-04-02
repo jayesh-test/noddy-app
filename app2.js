@@ -113,20 +113,6 @@ app.get("/music/lot",function(req,res){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*######################################APK-2######################################*/
 
 /*Bhoj-start*/
@@ -152,35 +138,6 @@ app.get("/bhoj/lot",function(req,res){
 /*######################################APK-2######################################*/
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*System-call*/
 app.get("/jayesh-test",function(req,res){
   try{
 
@@ -221,19 +178,80 @@ app.get("/jayesh-test",function(req,res){
 
 
 });
-/*System-call*/
+
+// app.get("/highway",function(req,res){
+//   var file_name=req.query.name;
+//   if(file_name){
+//         fs.stat(process.cwd()+"/public/media/"+file_name, function(err, stats) {
+//           if(err){
+//             return res.end("No file found : "+file_name);
+//           }else{
+//             var range = req.headers.range;
+//             if (!range) {
+//                 return res.end("No direct Access");
+//             }else{
+//                 var positions = range.replace(/bytes=/, "").split("-");
+//                 var start = parseInt(positions[0], 10);
+//                 var total = stats.size;
+//                 var end = positions[1] ? parseInt(positions[1], 10) : total - 1;
+//                 var chunksize = (end - start) + 1;
+
+//                 res.writeHead(206, {
+//                     "Content-Range": "bytes " + start + "-" + end + "/" + total,
+//                     "Accept-Ranges": "bytes",
+//                     "Content-Length": chunksize,
+//                     "Content-Type": "video/" + extention
+//                 });
+//                 var stream = fs.createReadStream(file_name, {start: start, end: end }).on("open", function() {stream.pipe(res); }).on("error", function(err) {res.end(err); });
+//             }
+//           }
+//        });
+//   }else{
+//     return res.end("--");
+//   }
+// });
+/*******************App-Highway*******************/
+
+
+
+/*get*/
 
 
 
 
+/*################################################################*/
+var fs = require("fs");
+app.get("/story_index",function(req,res){
+    /*Get story_index*/
+    fs.readFile(process.cwd()+"/public/story-block/story_slot.txt","utf-8",function(err,data){
+       if(err){
+        res.json({index:"0-0"});
+       }else{
+        res.json({index:data}); 
+       }
+    });
+});
 
+app.get("/story_load",function(req,res){
+  /*Story index*/
+  var index = req.query.index;
 
-
-
-
-
-
-
+  fs.stat(process.cwd()+"/public/story-block/story/"+index+".txt",function(err,data){
+    if(err){
+        res.json({index:0,image_path:0});
+    }else{
+          fs.readFile(process.cwd()+"/public/story-block/story/"+index+".txt","utf-8",function(err1,data1){
+               if(err){
+                res.json({index:0,image_path:0});
+               }else{
+                res.json({index:index,image_path:"/story-block/story/"+index+".jpg",story_text:data1.toString()});
+               }
+          });
+    }
+  });
+  
+});
+/*################################################################*/
 
 
 
