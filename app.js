@@ -42,27 +42,6 @@ var express = require('express'),
 
 
 var http = require('http');
-//var request=require("request");
-
-    // var CronJob = require('cron').CronJob;
-    // var job = new CronJob({
-    //   cronTime: '* 5 * * * *',
-    //   onTick: function() {
-    //       console.log("hi cron for test");
-    //         request.get('http://noddy-app.herokuapp.com:80/', function (error, response, body) {
-    //           if (!error && response.statusCode == 200) {
-    //               // Continue with your processing here.
-    //               console.log("Status ok");
-    //           }else{
-    //             console.log("Error "+error);
-    //           }
-
-    //         });
-    //   },
-    //   start: false,
-    //   timeZone: 'Asia/kolkata'
-    // });
-    // job.start();
 
 var app = express();
    app.use(compress({filter: function(req,res){
@@ -85,13 +64,6 @@ var app = express();
     app.locals.inspect = require('util').inspect;
 /*middleware*/
 
-    // app.set('port', process.env.PORT);
-    // var server = require("http").createServer(app);
-    //  server.listen(80,function(){
-    //         console.log('Express server listening on port 80');
-    // }); 
-
-
 /*get*/
 
 
@@ -103,122 +75,67 @@ app.get("/",function(req,res){
 });
 
 
-/*B-Video*/
-app.get("/mvideo",function(req,res){
-  var lot_json = require(process.cwd()+"/public/m-video/lot.json");
-  res.json({lot:lot_json});
-});
+/*######################################APK-1######################################*/
 
-
-/*B-Video*/
-app.get("/bvideo",function(req,res){
-  var lot_json = require(process.cwd()+"/public/b-video/lot.json");
-
-//   console.log(lot_json);
-
-// var distinct = [];
-
-// for(i in lot_json){
-
-//   console.log(lot_json[i].video);
-
-//    if(lot_json[i].video.length>0){
-//       var k=0;
-//       for(j in lot_json[i].video){
-
-//         //console.log( distinct.indexOf(lot_json[i].video[j]) );
-
-//         if(distinct.indexOf(lot_json[i].video[j]) > -1 ){
-
-//           //console.log("Delete "+lot_json[i].video[j]);
-//           delete lot_json[i].video[j];
-          
-//         }else{
-//           //console.log("Pushed "+lot_json[i].video[j]);
-//           distinct.push(lot_json[i].video[j]); 
-//         }
-//         //console.log(distinct);
-//         //console.log(video_list[i].video[j]);
-//       }
-
-//    }
-// }
-
-
-  //console.log(lot_json);
-  res.json({lot:lot_json});
-});
-/*B-Video*/
-
-
-// app.get("/coin-hive",function(req,res){
-
-// const CoinHive = require('coin-hive');
-
-// (async () => {
-//   const miner = await CoinHive('SyP8K30PFsIXCdKa1Ng4R7Ieh6BhIbLq'); // CoinHive's Site Key
-
-//   // Start miner
-//   await miner.start();
-
-//   // Listen on events
-//   miner.on('found', () => console.log('Found!'));
-//   miner.on('accepted', () => console.log('Accepted!'));
-//   miner.on('update', data =>
-//     console.log(`
-//     Hashes per second: ${data.hashesPerSecond}
-//     Total hashes: ${data.totalHashes}
-//     Accepted hashes: ${data.acceptedHashes}
-//   `)
-//   );
-
-//   // Stop miner
-//   setTimeout(async () => await miner.stop(), 60000);
-// })();
-
-
-// });
-
-
-
-app.get("/highway_channel",function(req,res){
-  res.json({list:list});
-});
-
-app.get("/highway",function(req,res){
-  var file_name=req.query.name;
-  //console.log(file_name);
-  if(file_name){
-        var pro_path=process.cwd()+"/public/media";
-        fs.stat(pro_path+"/"+file_name, function(err, stats) {
-          if(err){
-            return res.end("No file found : "+file_name);
-          }else{
-            var range = req.headers.range;
-            if (!range) {
-                return res.end("No direct Access");
-            }else{
-                var positions = range.replace(/bytes=/, "").split("-");
-                var start = parseInt(positions[0], 10);
-                var total = stats.size;
-                var end = positions[1] ? parseInt(positions[1], 10) : total - 1;
-                var chunksize = (end - start) + 1;
-
-                res.writeHead(206, {
-                    "Content-Range": "bytes " + start + "-" + end + "/" + total,
-                    "Accept-Ranges": "bytes",
-                    "Content-Length": chunksize,
-                    "Content-Type": "video/mp4"
-                });
-                var stream = fs.createReadStream(pro_path+"/"+file_name, {start: start, end: end }).on("open", function() {stream.pipe(res); }).on("error", function(err) {console.log(err);res.end(err); });
-            }
-          }
-       });
-  }else{
-    return res.end("--");
+/*Music*/
+app.get("/music/version",function(req,res){
+  var version = req.query.version;
+  if(!version){
+    version=1;
   }
+  fs.readFile(process.cwd()+"/public/json_obj/music/music_version.txt","utf-8",function(err,data){
+     if(err){
+        res.json({current_version:1,version:version});
+     }else{
+        res.json({current_version:parseInt(data,10),version:version});
+     }
+  });
 });
 
+app.get("/music/lot",function(req,res){
+  var lot_json = require(process.cwd()+"/public/json_obj/music/music_video_list.json");
+  res.json({lot:lot_json});
+});
+/*Music*/
+
+/*GIF*/
+/*GIF*/
+
+/*Meme*/
+/*Meme*/
+
+/*######################################APK-1######################################*/
+
+
+
+
+
+
+
+
+/*######################################APK-2######################################*/
+
+/*Bhoj-start*/
+app.get("/bhoj/version",function(req,res){
+  var version = req.query.version;
+  if(!version){
+    version=1;
+  }
+  fs.readFile(process.cwd()+"/public/json_obj/bhoj/bhoj_version.txt","utf-8",function(err,data){
+     if(err){
+        res.json({current_version:1,version:version});
+     }else{
+        res.json({current_version:parseInt(data,10),version:version});
+     }
+  });
+});
+
+app.get("/bhoj/lot",function(req,res){
+  var lot_json = require(process.cwd()+"/public/json_obj/bhoj/bhoj_video_list.json");
+  res.json({lot:lot_json});
+});
+/*Bhoj-end*/
+/*######################################APK-2######################################*/
 
 
 app.get("/jayesh-test",function(req,res){
@@ -369,6 +286,5 @@ if(app.get('env') === 'development'){
 /*#500_error*/
   return app;
 }();
-
 
 module.exports = app;
