@@ -98,14 +98,41 @@ app.get("/music/lot",function(req,res){
 });
 /*Music*/
 
+
 /*GIF*/
+app.get("/gif/version",function(req,res){
+  var version = req.query.version;
+  if(!version){
+    version=1;
+  }
+  fs.readFile(process.cwd()+"/public/json_obj/gif/gif_version.txt","utf-8",function(err,data){
+     if(err){
+        res.json({current_version:1,version:version});
+     }else{
+        res.json({current_version:parseInt(data,10),version:version});
+     }
+  });
+});
+
+app.get("/gif/lot",function(req,res){
+  var lot_json = require(process.cwd()+"/public/json_obj/gif/gif_list.json");
+  res.json({lot:lot_json});
+});
 /*GIF*/
 
-/*Meme*/
-/*Meme*/
+
+/*Musicaly-Downloader*/
+  /*1:Copy link*/
+  /*2:Parse Text*/
+  /*3:Fetch Video-page*/
+  /*4:Get poster and video*/
+  /*5:Push into collection*/
+/*Musicaly-Downloader*/
+
+
+
 
 /*######################################APK-1######################################*/
-
 
 
 
@@ -149,6 +176,28 @@ app.get("/bhoj/lot",function(req,res){
   res.json({lot:lot_json});
 });
 /*Bhoj-end*/
+
+/*Meme*/
+app.get("/meme/version",function(req,res){
+  var version = req.query.version;
+  if(!version){
+    version=1;
+  }
+  fs.readFile(process.cwd()+"/public/json_obj/meme/meme_version.txt","utf-8",function(err,data){
+     if(err){
+        res.json({current_version:1,version:version});
+     }else{
+        res.json({current_version:parseInt(data,10),version:version});
+     }
+  });
+});
+
+app.get("/meme/lot",function(req,res){
+  var lot_json = require(process.cwd()+"/public/json_obj/meme/gif_list.json");
+  res.json({lot:lot_json});
+});
+/*Meme*/
+
 /*######################################APK-2######################################*/
 
 
