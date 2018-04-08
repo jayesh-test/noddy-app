@@ -99,7 +99,6 @@ app.get("/music/lot",function(req,res){
 
 app.get("/music/download",function(req,res){ 
   var page = req.query.page;
-  var type = req.query.type;
 
   // console.log(page);
   // console.log(type);
