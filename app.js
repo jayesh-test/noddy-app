@@ -55,9 +55,10 @@ var app = express();
     app.set('views', path.join(__dirname, '/views'));
     app.set('view engine', 'ejs');
 /*view engine setup*/
-
+  var cors = require("cors");
 /*middleware*/
     app.use(bodyParser.json());
+    app.use(cors());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(express.static(path.join(__dirname, 'public')));
     app.locals.inspect = require('util').inspect;
@@ -95,6 +96,76 @@ app.get("/music/lot",function(req,res){
   var lot_json = require(process.cwd()+"/public/json_obj/music/music_video_list.json");
   res.json({lot:lot_json});
 });
+
+app.get("/music/download",function(req,res){ 
+  var page = req.query.page;
+  var type = req.query.type;
+
+  // console.log(page);
+  // console.log(type);
+
+  var opts = {
+    url: page
+  };
+
+  var request = require("request");
+  request(opts, function (err, res1, body) {
+      //console.log(body);
+
+
+       var video_link_regex_first = /video:secure_url.*\/\/.*(mp4|webm|mp3)/;
+       var poster_link_regex_first = /og:image.*\/\/.+(jpg|jpeg|png)/;
+
+       var video_link_first_cut = video_link_regex_first.exec(body.toString());
+       var poster_link_first_cut = poster_link_regex_first.exec(body.toString());
+
+        //console.log(first_cut_data[0]);
+        if(video_link_first_cut || poster_link_first_cut){
+
+          if(video_link_first_cut[0] || poster_link_first_cut[0]){
+
+          var second_cut_regex = /\/\/.*\.mp4/;
+          
+
+          var video_link_regex_second = /\/\/.*\.(mp4|webm|mp3)/;
+          var poster_link_regex_second = /\/\/.+(jpg|jpeg|png)/;
+
+
+          var video_link_second_cut = video_link_regex_second.exec(video_link_first_cut[0].toString());
+          var poster_link_second_cut = poster_link_regex_second.exec(poster_link_first_cut[0].toString());
+
+
+
+          if(video_link_second_cut[0] || video_link_second_cut[0]){
+
+             var video_chunk = "https:"+video_link_second_cut[0];
+             var poster_chunk = "https:"+poster_link_second_cut[0];
+
+             console.log(video_chunk);
+             console.log(poster_chunk);
+
+             res.json({status:1,video_link:video_chunk,poster_link:poster_chunk});
+
+           }else{
+            res.json({status:0});
+           }
+        }else{
+          res.json({status:0});
+        }
+      }else{
+        res.json({status:0});
+      }
+      // fs.writeFile(process.cwd()+"/test.html",body.toString(),function(err){
+      //    console.log(err);
+      // });
+
+      // var scrape_image_poster="";
+      // var scrape_video_link="";
+
+  });
+
+});
+
 /*Music*/
 
 
@@ -132,14 +203,6 @@ app.get("/gif/lot",function(req,res){
 
 
 /*######################################APK-1######################################*/
-
-
-
-
-
-
-
-
 
 
 
