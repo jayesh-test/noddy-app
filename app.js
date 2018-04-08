@@ -100,7 +100,7 @@ app.get("/music/lot",function(req,res){
 app.get("/music/download",function(req,res){ 
   var page = req.query.page;
 
-  // console.log(page);
+   console.log(page);
   // console.log(type);
 
   var opts = {
